@@ -9,6 +9,7 @@ async function run() {
   const octokit = github.getOctokit(myToken)
   const context = github.context;
 
+  console.log("Running Queries")
   const { data: alerts } = await octokit.codeScanning.listAlertsForRepo({
     ...context.repo
   });
@@ -39,6 +40,7 @@ async function run() {
   const variables = {...context.repo}
   const result = await octokit.graphql(query, variables);
   console.log(result)
+  console.log("ran queries")
 }
 
 run()
