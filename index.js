@@ -1,22 +1,44 @@
 const core = require('@actions/core');
-const wait = require('./wait');
+const github = require('@actions/github');
 
 
 // most @actions toolkit packages have async methods
 async function run() {
-  try { 
-    const ms = core.getInput('milliseconds');
-    console.log(`Waiting ${ms} milliseconds ...`)
 
-    core.debug((new Date()).toTimeString())
-    await wait(parseInt(ms));
-    core.debug((new Date()).toTimeString())
+  const myToken = core.getInput('myToken');
+  const octokit = github.getOctokit(myToken)
+  const context = github.context;
 
-    core.setOutput('time', new Date().toTimeString());
-  } 
-  catch (error) {
-    core.setFailed(error.message);
-  }
+  const { data: alerts } = await octokit.codeScanning.listAlertsForRepo({
+    ...context.repo
+  });
+
+  console.log(alerts)
+
+  const query =
+    `query ($org: String! $repo: String! $cursor: String){
+      repository(owner: $org name: $repo) {
+        name
+        vulnerabilityAlerts(first: 100 after: $cursor) {
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
+          totalCount
+          nodes {
+            id
+            securityAdvisory {
+              ghsaId,
+              severity
+            }
+          }
+        }
+      }
+    }`
+    
+  const variables = {...context.repo}
+  const result = await octokit.graphql(query, variables);
+  console.log(result)
 }
 
 run()
