@@ -1,5 +1,5 @@
 # specify the node base image with your desired version node:<version>
-FROM node:14.5.0-slim
+FROM node:14.5.0
 RUN apt-get update && apt-get install -y libfontconfig
 COPY . .
 RUN npm install --production
