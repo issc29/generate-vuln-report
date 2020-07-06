@@ -2403,7 +2403,7 @@ async function run() {
   console.log(a)
   
   // Read HTML Template
-  var html = fs.readFileSync(path.resolve(__dirname, "./template.html"))
+  var html = fs.readFileSync(path.resolve(__dirname, "./template.html"), 'utf8')
   var document = {
     html: html,
     data: {
