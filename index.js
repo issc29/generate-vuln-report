@@ -115,8 +115,8 @@ async function run() {
   console.log(a)
   
   // Read HTML Template
-  //var html = fs.readFileSync('./template.html', 'utf8');
-  //console.log(html)
+  var html = fs.readFileSync(path.resolve(__dirname, "./template.html"))
+  console.log(html)
   /*
   var document = {
     html: html,
