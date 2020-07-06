@@ -14,14 +14,14 @@ async function run() {
       ...context.repo
     });
 
-    console.log(alerts)
+    //console.log(alerts)
 
-    var alertCount = {'error': 0,'warning': 0,'note': 0}
-    alerts.forEach(alert => {
-      alertCount[alert.rule_severity] = alertCount[alert.rule_severity] + 1
+    var codeqlAlertCount = {'error': 0,'warning': 0,'note': 0}
+    codeqlAlertCount.forEach(alert => {
+      codeqlAlertCount[alert.rule_severity] = codeqlAlertCount[alert.rule_severity] + 1
     });
 
-    console.log(alertCount)
+    console.log(codeqlAlertCount)
 
     const query =
       `query ($org: String! $repo: String! $cursor: String){
@@ -45,14 +45,14 @@ async function run() {
       }`
       
     let pagination = null
-    var ossVulns = []
+    var ossAlerts = []
     try {
       let hasNextPage = false
       do {
         const getVulnResult = await octokit.graphql({query, org: context.repo.owner, repo: context.repo.repo, cursor: pagination })
         hasNextPage = getVulnResult.repository.vulnerabilityAlerts.pageInfo.hasNextPage
         const vulns = getVulnResult.repository.vulnerabilityAlerts.nodes
-        Array.prototype.push.apply(ossVulns, vulns)
+        Array.prototype.push.apply(ossAlerts, vulns)
         if (hasNextPage) {
           pagination = getVulnResult.repository.vulnerabilityAlerts.pageInfo.endCursor
         }
@@ -62,12 +62,19 @@ async function run() {
         console.log(error.message)
       }
     
-    console.log(ossVulns)
+    console.log(ossAlerts)
     console.log("ran queries")
   } catch (error) {
     core.debug(error);
     core.setFailed(error.message);
   }
+
+  var ossAlertCount = {'LOW': 0, 'MODERATE': 0, 'HIGH': 0, 'CRITICAL': 0}
+  
+  ossAlerts.forEach(alert => {
+    ossAlertCount[alert.securityAdvisory.severity] = ossAlertCount[alert.securityAdvisory.severity] + 1
+  });
+
 }
 
 run()
