@@ -391,7 +391,7 @@ const github = __webpack_require__(469);
 // most @actions toolkit packages have async methods
 async function run() {
   try {
-    const myToken = core.getInput('myToken');
+    const myToken = core.getInput('repo-token');
     const octokit = github.getOctokit(myToken)
     const context = github.context;
 
