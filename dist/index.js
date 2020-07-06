@@ -454,7 +454,7 @@ async function run() {
       }
 
       const query2 =
-      `query ($org: String! $repo: String! $cursor: String){
+      `query ($org: String! $repo: String!){
         repository(owner: $org name: $repo) {
           name
           dependencyGraphManifests {
