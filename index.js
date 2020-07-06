@@ -5,7 +5,7 @@ const github = require('@actions/github');
 // most @actions toolkit packages have async methods
 async function run() {
   const myToken = core.getInput('repo-token');
-  const octokit = github.getOctokit(myToken,  {accept: 'application/vnd.github.hawkgirl-preview+json'})
+  const octokit = github.getOctokit(myToken,  { accept: 'application/vnd.github.hawkgirl-preview+json' })
   const context = github.context;
 
   try {
@@ -89,7 +89,9 @@ async function run() {
 
       var dependencyCount = 0
       try {
-        const getDepedenciesCountInfo = await octokit.graphql({query: query2, org: context.repo.owner, repo: context.repo.repo })
+        const getDepedenciesCountInfo = await octokit.graphql({query: query2, org: context.repo.owner, repo: context.repo.repo, headers: {
+          accept: `application/vnd.github.hawkgirl-preview+json`
+        } })
         const dependencyCountNodes = getDepedenciesCountInfo.repository.dependencyGraphManifests.nodes
 
         dependencyCountNodes.forEach(dependencyCountNode => {
