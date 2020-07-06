@@ -461,6 +461,8 @@ async function run() {
     ossAlertCount[alert.securityAdvisory.severity] = ossAlertCount[alert.securityAdvisory.severity] + 1
   });
 
+  console.log(ossAlertCount)
+
 }
 
 run()
