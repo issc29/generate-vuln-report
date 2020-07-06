@@ -38,8 +38,25 @@ async function run() {
       }`
       
     const variables = {...context.repo}
-    const result = await octokit.graphql(query, variables);
-    console.log(result)
+    let pagination = null
+    var ossVulns = []
+    try {
+      let hasNextPage = false
+      do {
+        const getVulnResult = await octokit.graphql({query, org: context.repo.owner, repo: context.repo, cursor: pagination })
+        hasNextPage = getVulnResult.repository.vulnerabilityAlerts.pageInfo.hasNextPage
+        const vulns = getVulnResult.repository.vulnerabilityAlerts.nodes
+        ossVulns.push(vulns)
+        if (hasNextPage) {
+          pagination = getVulnResult.repository.vulnerabilityAlerts.pageInfo.endCursor
+        }
+      } while (hasNextPage)
+    } catch (error) {
+        console.log('Request failed:', error.request)
+        console.log(error.message)
+      }
+    
+    console.log(ossVulns)
     console.log("ran queries")
   } catch (error) {
     core.debug(error);
