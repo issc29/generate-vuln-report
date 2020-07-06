@@ -170,11 +170,14 @@ async function run() {
     orientation: "portrait",
   };
 
+  try{
   var out = Handlebars.compile(document.html)(document.data);
   var pdfPromise = pdf.create(out, options);
   pdfPromise.toBuffer(function(err, buffer){
     console.log(buffer);
   });
+} catch(error)
+{console.log(error)}
 
 
 
