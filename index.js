@@ -3,6 +3,7 @@ const github = require('@actions/github');
 const artifact = require('@actions/artifact');
 var pdf = require("pdf-creator-node");
 var fs = require('fs');
+const path = require("path");
 
 
 // most @actions toolkit packages have async methods
@@ -108,10 +109,11 @@ async function run() {
 
       console.log(`Number of Dependencies: ${dependencyCount}`)
 
+      
   console.log(__dirname)
-  console.log(fs.readdirSync('.'))
+  console.log(fs.readdirSync(path.resolve(__dirname, ".")))
   // Read HTML Template
-  var html = fs.readFileSync('./html/template.html', 'utf8');
+  var html = fs.readFileSync(path.resolve(__dirname,'./html/template.html'), 'utf8');
 
   var document = {
     html: html,

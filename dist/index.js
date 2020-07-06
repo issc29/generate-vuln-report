@@ -2292,6 +2292,7 @@ const github = __webpack_require__(469);
 const artifact = __webpack_require__(214);
 var pdf = __webpack_require__(628);
 var fs = __webpack_require__(747);
+const path = __webpack_require__(622);
 
 
 // most @actions toolkit packages have async methods
@@ -2397,10 +2398,11 @@ async function run() {
 
       console.log(`Number of Dependencies: ${dependencyCount}`)
 
+      
   console.log(__dirname)
-  console.log(fs.readdirSync('.'))
+  console.log(fs.readdirSync(path.resolve(__dirname, ".")))
   // Read HTML Template
-  var html = fs.readFileSync('./html/template.html', 'utf8');
+  var html = fs.readFileSync(__webpack_require__.ab + "template.html", 'utf8');
 
   var document = {
     html: html,
