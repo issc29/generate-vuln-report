@@ -390,15 +390,16 @@ const github = __webpack_require__(469);
 
 // most @actions toolkit packages have async methods
 async function run() {
-  try {
-    const myToken = core.getInput('repo-token');
-    const octokit = github.getOctokit(myToken)
-    const context = github.context;
+  const myToken = core.getInput('repo-token');
+  const octokit = github.getOctokit(myToken)
+  const context = github.context;
 
+  try {
     console.log("Running Queries")
     const { data: alerts } = await octokit.codeScanning.listAlertsForRepo({
       ...context.repo
     });
+    
 
     //console.log(alerts)
 
@@ -408,6 +409,10 @@ async function run() {
     });
 
     console.log(codeqlAlertCount)
+  } catch (error) {
+    core.debug(error);
+    core.setFailed(error.message);
+  }
 
     const query =
       `query ($org: String! $repo: String! $cursor: String){
@@ -447,21 +452,52 @@ async function run() {
         console.log('Request failed:', error.request)
         console.log(error.message)
       }
-    
-    console.log(ossAlerts)
-    console.log("ran queries")
-  } catch (error) {
-    core.debug(error);
-    core.setFailed(error.message);
-  }
 
-  var ossAlertCount = {'LOW': 0, 'MODERATE': 0, 'HIGH': 0, 'CRITICAL': 0}
+      const query2 =
+      `query ($org: String! $repo: String! $cursor: String){
+        repository(owner: $org name: $repo) {
+          name
+          dependencyGraphManifests {
+            nodes{
+              dependenciesCount
+            }
+          }
+        }
+      }`
+
+      var ossAlertCount = {'LOW': 0, 'MODERATE': 0, 'HIGH': 0, 'CRITICAL': 0}
   
-  ossAlerts.forEach(alert => {
-    ossAlertCount[alert.securityAdvisory.severity] = ossAlertCount[alert.securityAdvisory.severity] + 1
-  });
+      ossAlerts.forEach(alert => {
+        ossAlertCount[alert.securityAdvisory.severity] = ossAlertCount[alert.securityAdvisory.severity] + 1
+      });
+    
+      console.log(ossAlertCount)
 
-  console.log(ossAlertCount)
+
+      var dependencyCount = 0
+      try {
+        const getDepedenciesCountInfo = await octokit.graphql({query2, org: context.repo.owner, repo: context.repo.repo })
+        const dependencyCountNodes = getDepedenciesCountInfo.repository.dependencyGraphManifests.nodes
+
+        dependencyCountNodes.forEach(dependencyCountNode => {
+          dependencyCount += dependencyCountNode.dependenciesCount
+        });
+      }
+      catch (error) {
+        console.log('Request failed:', error.request)
+        console.log(error.message)
+      }
+
+      console.log(`Number of Dependencies: ${dependencyCount}`)
+
+
+
+    
+    //console.log(ossAlerts)
+    //console.log("ran queries")
+
+
+
 
 }
 
