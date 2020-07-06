@@ -453,6 +453,14 @@ async function run() {
         console.log(error.message)
       }
 
+      var ossAlertCount = {'LOW': 0, 'MODERATE': 0, 'HIGH': 0, 'CRITICAL': 0}
+  
+      ossAlerts.forEach(alert => {
+        ossAlertCount[alert.securityAdvisory.severity] = ossAlertCount[alert.securityAdvisory.severity] + 1
+      });
+    
+      console.log(ossAlertCount)
+
       const query2 =
       `query ($org: String! $repo: String!){
         repository(owner: $org name: $repo) {
@@ -465,18 +473,9 @@ async function run() {
         }
       }`
 
-      var ossAlertCount = {'LOW': 0, 'MODERATE': 0, 'HIGH': 0, 'CRITICAL': 0}
-  
-      ossAlerts.forEach(alert => {
-        ossAlertCount[alert.securityAdvisory.severity] = ossAlertCount[alert.securityAdvisory.severity] + 1
-      });
-    
-      console.log(ossAlertCount)
-
-
       var dependencyCount = 0
       try {
-        const getDepedenciesCountInfo = await octokit.graphql({query2, org: context.repo.owner, repo: context.repo.repo })
+        const getDepedenciesCountInfo = await octokit.graphql({query: query2, org: context.repo.owner, repo: context.repo.repo })
         const dependencyCountNodes = getDepedenciesCountInfo.repository.dependencyGraphManifests.nodes
 
         dependencyCountNodes.forEach(dependencyCountNode => {
