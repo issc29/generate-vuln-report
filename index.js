@@ -5,6 +5,9 @@ var pdf = require("pdf-creator-node");
 var fs = require('fs');
 const path = require("path");
 
+var Handlebars = require('handlebars');
+var pdf = require('html-pdf');
+
 
 // most @actions toolkit packages have async methods
 async function run() {
@@ -167,13 +170,19 @@ async function run() {
     orientation: "portrait",
   };
 
-pdf.create(document, options)
-      .then(res => {
-          console.log(res)
-      })
-      .catch(error => {
-          console.error(error)
-      });
+  var out = Handlebars.compile(document.html)(document.data);
+  var pdfPromise = pdf.create(out, options);
+  pdfPromise.toFile(document.path, (err, res) => {
+    if (!err) {
+        console.log(res);
+        console.log("a")
+    }
+    else {
+      console.log(err);
+      console.log("b")
+    }
+});
+
 
 
 }
