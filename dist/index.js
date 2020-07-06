@@ -2402,11 +2402,11 @@ async function run() {
       console.log(`Number of Dependencies: ${dependencyCount}`)
       
  //console.log(__dirname)
-  var a = fs.readdirSync(path.resolve(__dirname, "."))
-  console.log(a)
+  //var a = fs.readdirSync(path.resolve(__dirname, "."))
+  //console.log(a)
   
   // Read HTML Template
-  var html = fs.readFileSync(path.resolve(__dirname, "./template.html"), 'utf8')
+  //var html = fs.readFileSync(path.resolve(__dirname, "./template.html"), 'utf8')
   
   var html2 = `<!DOCTYPE html>
   <html>
