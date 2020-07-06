@@ -115,8 +115,41 @@ async function run() {
   
   // Read HTML Template
   var html = fs.readFileSync(path.resolve(__dirname, "./template.html"), 'utf8')
+  
+  var html2 = `<!DOCTYPE html>
+  <html>
+      <head>
+          <mate charest="utf-8" />
+          <title>GitHub Advanced Security Summary</title>
+      </head>
+      <body>
+          <h1>GitHub Advanced Security Summary</h1>
+  
+          <h2>Software Composition Analysis (SCA)</h2>
+          <p>Number of Dependencies: {{sca.dependencyCount}}<br/>
+          SCA Dependency Vulnerability Findings:
+          <ul>
+              <li>Critical: {{sca.alertsBySeverity.CRITICAL}}</li>
+              <li>High: {{sca.alertsBySeverity.HIGH}}</li>
+              <li>Moderate: {{sca.alertsBySeverity.MODERATE}}</li>
+              <li>Low: {{sca.alertsBySeverity.LOW}}</li>
+              <br>
+          </ul>
+          </p>
+  
+          <h2>SAST Findings</h2>
+          <ul>
+            <li>Errors: {{sast.error}}</li>
+            <li>Warnings: {{sast.warning}}</li>
+            <li>Notes: {{sast.note}}</li>
+            <br>
+        </ul>
+      </body>
+  </html>`
+  
+  
   var document = {
-    html: html,
+    html: html2,
     data: {
         sca: {
           alertsBySeverity: ossAlertCount,
