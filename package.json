@@ -24,8 +24,10 @@
   },
   "homepage": "https://github.com/issc29/generate-vuln-report#readme",
   "dependencies": {
+    "@actions/artifact": "^0.3.2",
     "@actions/core": "^1.1.1",
-    "@actions/github": "^4.0.0"
+    "@actions/github": "^4.0.0",
+    "pdf-creator-node": "^1.4.1"
   },
   "devDependencies": {
     "@zeit/ncc": "^0.20.5",

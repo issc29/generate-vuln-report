@@ -1,11 +1,14 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
+const artifact = require('@actions/artifact');
+var pdf = require("pdf-creator-node");
+var fs = require('fs');
 
 
 // most @actions toolkit packages have async methods
 async function run() {
   const myToken = core.getInput('repo-token');
-  const octokit = github.getOctokit(myToken,  { accept: 'application/vnd.github.hawkgirl-preview+json' })
+  const octokit = github.getOctokit(myToken)
   const context = github.context;
 
   try {
@@ -106,14 +109,46 @@ async function run() {
       console.log(`Number of Dependencies: ${dependencyCount}`)
 
 
+  // Read HTML Template
+  var html = fs.readFileSync('html/template.html', 'utf8');
 
-    
-    //console.log(ossAlerts)
-    //console.log("ran queries")
+  var document = {
+    html: html,
+    data: {
+        sca: {
+          alertsBySeverity: ossAlertCount,
+          dependencyCount: dependencyCount
+        },
+        sast:{
+          codeqlAlertCount
+        }
+    },
+    path: "./output.pdf"
+  };
 
+  var options = {
+    format: "Letter",
+    orientation: "portrait",
+  };
 
+  pdf.create(document, options)
+      .then(res => {
+          console.log(res)
+      })
+      .catch(error => {
+          console.error(error)
+      });
+  const artifactClient = artifact.create()
+  const artifactName = 'GHAS-report';
 
-
+  const files = [
+    "./output.pdf"
+  ]
+  const rootDirectory = '.' // Also possible to use __dirname
+  const options2 = {
+    continueOnError: false
+  }
+  const uploadResponse = await artifactClient.uploadArtifact(artifactName, files, rootDirectory, options2)
 }
 
 run()
