@@ -2461,16 +2461,9 @@ async function run() {
 
   var out = Handlebars.compile(document.html)(document.data);
   var pdfPromise = pdf.create(out, options);
-  pdfPromise.toFile(document.path, (err, res) => {
-    if (!err) {
-        console.log(res);
-        console.log("a")
-    }
-    else {
-      console.log(err);
-      console.log("b")
-    }
-});
+  pdfPromise.toBuffer(function(err, buffer){
+    console.log(buffer);
+  });
 
 
 
