@@ -126,7 +126,7 @@ async function run() {
           codeqlAlertCount
         }
     },
-    path: "./output.pdf"
+    path: path.resolve(__dirname,"./output.pdf")
   };
 
   var options = {
@@ -145,7 +145,7 @@ async function run() {
   const artifactName = 'GHAS-report';
 
   const files = [
-    "./output.pdf"
+    path.resolve(__dirname,"./output.pdf")
   ]
   const rootDirectory = '.' // Also possible to use __dirname
   const options2 = {
