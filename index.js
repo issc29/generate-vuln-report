@@ -141,17 +141,6 @@ async function run() {
       .catch(error => {
           console.error(error)
       });
-  const artifactClient = artifact.create()
-  const artifactName = 'GHAS-report';
-
-  const files = [
-    path.resolve(__dirname,"./output.pdf")
-  ]
-  const rootDirectory = '.' // Also possible to use __dirname
-  const options2 = {
-    continueOnError: false
-  }
-  const uploadResponse = await artifactClient.uploadArtifact(artifactName, files, rootDirectory, options2)
 }
 
 run()
