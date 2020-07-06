@@ -108,7 +108,7 @@ async function run() {
 
       console.log(`Number of Dependencies: ${dependencyCount}`)
 
-
+  console.log(__dirname)
   // Read HTML Template
   var html = fs.readFileSync('./html/template.html', 'utf8');
 
