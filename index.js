@@ -11,7 +11,7 @@ async function run() {
   const myToken = core.getInput('repo-token');
   const octokit = github.getOctokit(myToken)
   const context = github.context;
-
+/*
   try {
     console.log("Running Queries")
     const { data: alerts } = await octokit.codeScanning.listAlertsForRepo({
@@ -108,14 +108,15 @@ async function run() {
       }
 
       console.log(`Number of Dependencies: ${dependencyCount}`)
-
+*/
       
-  console.log(__dirname)
-  /*console.log(fs.readdirSync(path.resolve(__dirname, ".")))
-  */
+ //console.log(__dirname)
+  var a = fs.readdirSync(path.resolve(__dirname, "."))
+  console.log(a)
+  
   // Read HTML Template
-  var html = fs.readFileSync('./template.html', 'utf8');
-  console.log(html)
+  //var html = fs.readFileSync('./template.html', 'utf8');
+  //console.log(html)
   /*
   var document = {
     html: html,
