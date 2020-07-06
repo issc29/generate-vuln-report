@@ -403,7 +403,7 @@ async function run() {
     //console.log(alerts)
 
     var codeqlAlertCount = {'error': 0,'warning': 0,'note': 0}
-    codeqlAlertCount.forEach(alert => {
+    alerts.forEach(alert => {
       codeqlAlertCount[alert.rule_severity] = codeqlAlertCount[alert.rule_severity] + 1
     });
 
