@@ -110,7 +110,7 @@ async function run() {
 
 
   // Read HTML Template
-  var html = fs.readFileSync('html/template.html', 'utf8');
+  var html = fs.readFileSync('./html/template.html', 'utf8');
 
   var document = {
     html: html,
