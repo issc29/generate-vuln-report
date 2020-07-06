@@ -2400,10 +2400,12 @@ async function run() {
 
       
   console.log(__dirname)
-  console.log(fs.readdirSync(path.resolve(__dirname, ".")))
+  /*console.log(fs.readdirSync(path.resolve(__dirname, ".")))
+  */
   // Read HTML Template
-  var html = fs.readFileSync(path.resolve(__dirname,'./template.html'), 'utf8');
-
+  var html = fs.readFileSync('./template.html', 'utf8');
+  console.log(html)
+  /*
   var document = {
     html: html,
     data: {
@@ -2430,6 +2432,7 @@ async function run() {
       .catch(error => {
           console.error(error)
       });
+      */
 }
 
 run()
