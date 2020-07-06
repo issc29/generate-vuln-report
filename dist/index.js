@@ -429,7 +429,7 @@ async function run() {
     try {
       let hasNextPage = false
       do {
-        const getVulnResult = await octokit.graphql({query, org: context.repo.owner, repo: context.repo, cursor: pagination })
+        const getVulnResult = await octokit.graphql({query, org: context.repo.owner, repo: context.repo.repo, cursor: pagination })
         hasNextPage = getVulnResult.repository.vulnerabilityAlerts.pageInfo.hasNextPage
         const vulns = getVulnResult.repository.vulnerabilityAlerts.nodes
         ossVulns.push(vulns)
