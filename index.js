@@ -90,7 +90,7 @@ async function run() {
 
       var dependencyCount = 0
       try {
-        const getDepedenciesCountInfo = await octokit.graphql({query2, org: context.repo.owner, repo: context.repo.repo })
+        const getDepedenciesCountInfo = await octokit.graphql({query2, headers: {accept: `application/vnd.github.hawkgirl-preview+json`}, org: context.repo.owner, repo: context.repo.repo })
         const dependencyCountNodes = getDepedenciesCountInfo.repository.dependencyGraphManifests.nodes
 
         dependencyCountNodes.forEach(dependencyCountNode => {
