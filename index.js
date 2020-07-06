@@ -134,7 +134,7 @@ async function run() {
     orientation: "portrait",
   };
 
-  pdf.create(document, options)
+  await pdf.create(document, options)
       .then(res => {
           console.log(res)
       })
