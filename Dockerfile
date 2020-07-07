@@ -4,4 +4,4 @@ RUN apt-get update && apt-get install -y libfontconfig
 WORKDIR /github/workspace
 COPY . .
 RUN npm install --production
-ENTRYPOINT ["node", "/lib/index.js"]
+ENTRYPOINT ["node", "lib/index.js"]
