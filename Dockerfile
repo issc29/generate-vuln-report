@@ -8,4 +8,4 @@ COPY package*.json ./
 
 RUN npm install --production
 COPY . .
-ENTRYPOINT ["node", "lib/index.js"]
+ENTRYPOINT ["node", "./lib/index.js"]
