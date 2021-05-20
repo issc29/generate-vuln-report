@@ -28,7 +28,7 @@
     "@actions/core": "^1.1.1",
     "@actions/github": "^4.0.0",
     "handlebars": "^4.7.6",
-    "html-pdf": "^2.2.0",
+    "html-pdf": "^3.0.1",
     "path": "^0.12.7",
     "pdf-creator-node": "^1.4.1"
   },
